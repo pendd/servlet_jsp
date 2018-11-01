@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="jquery-3.3.1.js"></script>
+
+        <script>
+
+            $(function () {
+                $("button").click(function () {
+                   $.ajax({
+                       url: "/apiTest",
+                       type:"get",     // post
+                       // data:{name:"king",sex:"male"},          // 传参
+                       cache: false,                 // 不支持缓存
+                       async:true,                   // 异步
+                       // dataType:"text",            // script text html json
+                       dataType:"json",
+                       success: function (result) {
+                           console.log(result);
+                           /*var obj = JSON.parse(result);
+                           console.log(obj);
+                           console.log(obj[0].balance);*/
+                       },
+                       error: function (e) {
+                           console.log(e);
+                       }
+                   });
+
+                });
+            })
+
+        </script>
+    </head>
+    <body>
+        <div id="div1">我是原始文本</div>
+        <button>触发加载ajax的内容</button>
+    </body>
+</html>

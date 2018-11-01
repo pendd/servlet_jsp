@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="jquery-3.3.1.js"></script>
+
+        <script>
+
+            $(function () {
+                $("button").click(function () {
+                   $.ajax({
+                       url: "myTest.js",
+                       dataType:"script",
+                       success: function (result) {
+                           
+                       },
+                       error: function (e) {
+                           console.log(e);
+                       }
+                   });
+
+                });
+            })
+
+        </script>
+    </head>
+    <body>
+        <div id="div1">我是原始文本</div>
+        <button>触发加载ajax的内容</button>
+    </body>
+</html>

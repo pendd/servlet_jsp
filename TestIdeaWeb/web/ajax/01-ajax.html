@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+        <script src="jquery-3.3.1.js"></script>
+
+        <script>
+
+            $(function () {
+                $("button").click(function () {
+                    // js 原生的
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.onreadystatechange = function(ev){
+                        console.log(ev);
+
+                        console.log("readyState----" + xhr.readyState);
+                        console.log("state-----" + xhr.status);
+
+                        if (xhr.readyState == 4 && xhr.status ==200) {
+
+                        }
+                    }
+
+                    xhr.open("GET","txtDemo.txt",true);
+                    xhr.send();
+
+
+
+                    /*// jQuery
+
+                    $("#div1").load("txtDemo.txt",function (responseStr,statusText,xhr) {
+                        console.log(responseStr);
+                        console.log(statusText);
+                    });
+                    // $("#div1").load("txtDemo.txt #h2Test");*/
+                });
+
+            })
+
+        </script>
+
+    </head>
+    <body>
+
+        <div id="div1">我是原始文本</div>
+        <button>触发加载ajax的内容</button>
+    </body>
+</html>

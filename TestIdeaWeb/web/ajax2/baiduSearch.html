@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+        <style>
+
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            #content {
+                margin: 200px auto 0;
+                width: 400px;
+            }
+
+            #txtSearch {
+                width: 300px;
+                height: 20px;
+            }
+
+            #btnSearch {}
+
+            #datas {
+                border: 1px solid red;
+                width: 302px;
+            }
+
+            #datas ul{
+                list-style: none;
+            }
+
+        </style>
+
+        <script src="../ajax/jquery-3.3.1.js"></script>
+        <script src="template-web.js"></script>
+
+        <script id="test" type="text/html">
+            <div id="datas">
+                <ul>
+
+                    <% for(var i = 0; i < s.length; i++){ %>
+                        <li> <%= s[i] %> </li>
+                    <% }  %>
+
+                </ul>
+            </div>
+        </script>
+
+
+
+
+        <script>
+
+            $(function () {
+                $("#txtSearch").keyup(function () {
+
+                    var key = $("#txtSearch").val();
+
+                    // 发起ajax请求
+                    $.ajax({
+                        url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=" + key,
+                        type:"get",
+                        dataType:"jsonp",
+                        jsonp:"cb",
+                        success:function (result) {
+
+                            console.log(result);
+                            console.log(result.s);
+                            $("#datas").remove();
+
+
+
+                            if (result.s.length > 0) {
+                            var html = template("test",result);
+                                $("#content").append(html);
+                            }
+
+
+
+                            /*var div = $("<div id='datas'></div>");
+                            var ul = $("<ul></ul>");
+                            if (result.s.length == 0) {
+                                return;
+                            }
+
+                            $.each(result.s,function (i, element) {
+                                var li = $("<li></li>").append(element);
+                                $(ul).append(li);
+                            });
+
+                            $(div).append(ul);
+                            $("#content").append(div);*/
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+
+                });
+            })
+
+        </script>
+
+    </head>
+    <body>
+
+        <div id="content">
+            <input type="text" id="txtSearch">
+            <button id="btnSearch">搜索</button>
+            <!--<div id="datas">
+                <ul>
+                    <li>123</li>
+                    <li>123</li>
+                    <li>123</li>
+                </ul>
+            </div>-->
+        </div>
+
+    </body>
+</html>

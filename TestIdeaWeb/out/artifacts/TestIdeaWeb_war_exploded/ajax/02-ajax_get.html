@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="jquery-3.3.1.js"></script>
+
+        <script>
+
+            $(function () {
+                $("button").click(function () {
+                    /*$.get("http://localhost:8080/testGet?name=123",function (data, status) {
+                        console.log(data);
+                        console.log(status);
+                    });*/
+
+                    $.post("http://localhost:8080/testGet",{
+                        name:"king"
+                    },function (data, status) {
+                        console.log(data);
+                        console.log(status);
+                    });
+
+                });
+            })
+
+        </script>
+    </head>
+    <body>
+        <button>调试get</button>
+    </body>
+</html>

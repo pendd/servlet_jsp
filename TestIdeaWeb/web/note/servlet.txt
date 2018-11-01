@@ -1,0 +1,106 @@
+一、
+    http://localhost:8080/p/reqTest?name=zhangsan&age=14
+
+    contextPath:/p             上下文路径
+
+    servletPath:/reqTest       servlet里urlPatterns路径
+
+    requestURI:/p/reqTest      上下文路径 + urlPatterns
+
+    requestURL:http://localhost:8080/p/reqTest      全路径去除参数
+
+二、
+    内部转发 : request.getRequestDispatch
+
+    特点：
+        0.第一个servlet的输出信息只是保存到缓存中，会被第2个servlet清空。
+            因此第1个servlet中的内容无法输出
+        1.路径不变  第一个页面转发到第二个页面   路径还是第一个路径
+        2.访问顺序    第一个页面走doGet() 第二个页面也走doGet()   doPost() 也是doPost()
+            （因为service方法判断请求方式 执行了相应的方法）
+        3.在第1个servlet转发代码之后，不能再调用类似 转发或重定向 的代码。否则会500异常，
+            因为转发之后，不能再回到此处进行跳转到别的页面
+        4.两个servlet之间传参: 在第1个中request.setAttribute()，在第2个中request.getAttribute();
+        5.如果在第1个servlet中调用“out.flush();”，那么第1个servlet中的信息会输出，而第2个不会输出。
+            不但如此，第1个servlet中的转发都会出异常，因为：刷缓存就是要Tomcat帮我们输出信息。
+            而同一个请求，Tomcat只会输出一次，因此输出之后流就关闭了，无法再转发。
+
+
+        post请求地址栏带参数优先获取地址栏上的值   所以不要在post请求的地址栏中设置参数值
+
+
+
+
+
+四、请求内部转发和重定向的区别？
+    1.请求内部转发
+        使用：req.getRequestDispatcher("uri").forward(req, resp);
+
+        1、多个Servlet共享一个request对象(重点)
+        2、一次请求，当转发结束的时候也就是业务处理完毕的时候request对象会被销毁
+        3、地址栏不改变
+        注意在执行转发完毕后会继续执行代码，但是没有意义，所以一般在转发后面加return
+        4、request对象的作用域（重中之重）
+                作用域：共享request对象的Servlet
+                作用域中存取数据:
+                            req.setAttribute(key,value)
+                            req.getAttribute(key)
+                            req.removeAttribute(key)
+
+    2.重定向
+                使用:resp.sendRedirect("uri");
+                特点：
+                    地址栏改变
+                    两次请求，两个request对象
+
+
+
+    总结：
+    请求转发是一次请求，地址栏不改变，多个Sevrlet共享一个request
+    重定向是两次请求，地址栏改变，两个request对象
+
+五、匹配规则
+    1.精确匹配
+        http:// xxx.com/myapp/table/ 是非法的url，不会被当作http:// xxx.com /myapp/table识别
+        另外上述url后面可以跟任意的查询条件，都会被匹配  http:// xxx.com /myapp/table?hello
+
+    2.扩展名规则
+        *.jsp   则任何扩展名为jsp（文件名和路径任意）的url请求都会匹配
+        /*.jsp   tomcat会报错
+
+    3.路径匹配
+        注意：路径和扩展名匹配无法同时设置，比如下面的三个<url-pattern>都是非法的，
+        如果设置，启动tomcat服务器会报错。
+
+        <url-pattern>/kata/*.jsp</url-pattern>
+        <url-pattern>/*.jsp</url-pattern>
+        <url-pattern>he*.jsp</url-pattern>
+
+        另外注意：<url-pattern>/aa/*/bb</url-pattern>
+        这个是精确匹配，url必须是 /aa/*/bb，这里的*不是通配的含义
+
+    4.匹配任意的url
+        <url-pattern>/</url-pattern>：
+        会匹配到/springmvc这样的路径型url，不会匹配到模式为*.jsp这样的后缀型url。
+
+        <url-pattern>/*</url-pattern>：
+        会匹配所有的url：路径型的和后缀型的url(包括/springmvc，.jsp，.js和*.html等)。
+
+    5.总结  url的优先顺序
+         精确路径 > 最长路径>扩展名
+
+
+
+
+
+六、cookie和session
+    Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。
+
+
+
+
+
+
+
+七、过滤器
+    多个Filter可以执行同一个servlet   不过需要 chain.doFilter(req, resp);

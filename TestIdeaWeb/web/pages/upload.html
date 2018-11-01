@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+        <title>上传文件</title>
+    </head>
+    <body>
+        <fieldset>
+            <legend>上传单个文件</legend>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            上传文件:<input type="file" name="file">
+            <br>
+            <input type="submit" value="上传">
+        </form>
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+            <legend>上传多个文件</legend>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                上传文件:<input type="file" name="file1">
+                <br>
+                上传文件:<input type="file" name="file2">
+                <br>
+                上传文件:<input type="file" name="file3">
+                <br>
+                <input type="submit" value="上传">
+            </form>
+        </fieldset>
+    </body>
+</html>
